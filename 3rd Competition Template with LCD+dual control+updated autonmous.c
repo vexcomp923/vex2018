@@ -28,7 +28,7 @@ motor [backRight] = 63 + t*r;
 motor [frontLeft] = 63 + t*l;
 motor [frontRight] = 63 + t*r;
 wait1Msec(5000);
-p++;
+p++;.
 }
 }*/
 
@@ -160,20 +160,12 @@ void pre_auton()
 task autonomous()
 {
 
-
-
-
-
-
 	//short backLeftAdjust;
 
 
 	startTask (startUltra);
 
-	//mobile lift open
-
-	//	motor[backLeft] = 63;
-	while (true)
+	while (p < 50)
 	{
 		motor[backLeft] = 63 + t*r;
 		motor [backRight] = 63 + t*l;
@@ -186,31 +178,39 @@ task autonomous()
 	stopTask(startUltra);
 
 	motor [mobileLift] = 127;
-	wait1Msec(500);
+	wait1Msec(2000);
 	motor [mobileLift] = 0;
+	wait1Msec(100);
 
 	motor [mobileLift] = -127;
-	wait1Msec(500);
+	wait1Msec(2000);
 	motor [mobileLift] = 0;
+	wait1Msec(1000);
 
 	motor[backLeft] = 63;
 	motor [backRight] = 63;
 	motor [frontLeft] = 63;
 	motor [frontRight] = 63;
-	wait1Msec(500);
+	wait1Msec(1000);
 	motor[backLeft] = 0;
 	motor [backRight] = 0;
 	motor [frontLeft] = 0;
 	motor [frontRight] = 0;
+	wait1Msec(500);
 
 	motor[backLeft] = -63;
 	motor [backRight] = 63;
 	motor [frontLeft] = -63;
 	motor [frontRight] = 63;
+	wait1Msec(300);
+	motor[backLeft] = 0;
+	motor [backRight] = 0;
+	motor [frontLeft] = 0;
+	motor [frontRight] = 0;
 
 	startTask (startUltraRev);
 
-	while (true)
+	while (p < 50)
 	{
 		motor[backLeft] = 63 + t*l;
 		motor [backRight] = 63 + t*r;
@@ -221,12 +221,14 @@ task autonomous()
 	}
 
 	motor [mobileLift] = 127;
-	wait1Msec(500);
+	wait1Msec(2000);
 	motor [mobileLift] = 0;
+	wait1Msec(500);
 
 	motor [mobileLift] = -127;
 	wait1Msec(500);
 	motor [mobileLift] = 0;
+	wait1Msec(500);
 
 	motor[backLeft] = 63;
 	motor [backRight] = 63;
@@ -237,7 +239,9 @@ task autonomous()
 	motor [backRight] = 0;
 	motor [frontLeft] = 0;
 	motor [frontRight] = 0;
+	wait1Msec(500);
 
+	stopTask (startUltraRev);
 
 
 	/*motor[mobileLift] = 127;
