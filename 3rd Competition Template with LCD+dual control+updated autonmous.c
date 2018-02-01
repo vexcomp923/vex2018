@@ -4,8 +4,8 @@
 #pragma config(Motor,  port2,           backLeft,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           frontRight,    tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port4,           backRight,     tmotorVex393_MC29, openLoop, reversed)
-#pragma config(Motor,  port5,           arms,          tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port6,           frontLeft,     tmotorVex393_MC29, openLoop, reversed)
+#pragma config(Motor,  port5,           frontLeft,     tmotorVex393_MC29, openLoop, reversed)
+#pragma config(Motor,  port6,           arms,          tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port7,           claw,          tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port8,           armss,         tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port9,           mobileLift,    tmotorVex393_MC29, openLoop)
@@ -14,260 +14,568 @@
 
 //*distance between the robot's starting position and the nearest mobile goal is 54.23 inches
 
+
+
 int p = 0;
+
 int t = 0;
+
 int r = 0;
+
 int l = 0;
 
+
+
 /*void moveForward (int p, int t, int r, int l)
+
 {
+
 while (p < 3)
+
 {
+
 motor[backLeft] = 63 + t*l;
+
 motor [backRight] = 63 + t*r;
+
 motor [frontLeft] = 63 + t*l;
+
 motor [frontRight] = 63 + t*r;
+
 wait1Msec(5000);
+
 p++;.
+
 }
+
 }*/
 
 
+
+
+
 task startUltra ()
+
 {
+
 	while (true)
+
 	{
+
 		resetMotorEncoder(backLeft);
+
 		resetMotorEncoder(frontLeft);
+
 		resetMotorEncoder(backRight);
+
 		resetMotorEncoder(frontRight);
 
+
+
 		if (SensorValue[InputUltraRight] == 20 || SensorValue[InputUltraRight] == -1)
+
 		{
+
 			t = 0;
+
 			r = 0;
+
 			l = 0;
+
 			//			motor[backLeft] = 63;
+
 		}
+
 		else if (SensorValue[InputUltraRight] < 20)
+
 		{
+
 			t = 40;
+
 			r = 0;
+
 			l = 1;
+
 			//			motor[backLeft] = 63 + 20;
+
 		}
+
 		else if(SensorValue[InputUltraRight] > 20)
+
 		{
+
 			t = 40;
+
 			r = 1;
+
 			l = 0;
+
 			//			motor[backLeft] = 50;
+
 		}
+
 		wait1Msec (15);
+
+
 
 	}
 
+
+
 }
+
+
+
 
 
 task startUltraRev ()
+
 {
+
 	while (true)
+
 	{
+
 		resetMotorEncoder(backLeft);
+
 		resetMotorEncoder(frontLeft);
+
 		resetMotorEncoder(backRight);
+
 		resetMotorEncoder(frontRight);
 
+
+
 		if (SensorValue[InputUltraLeft] == 20 || SensorValue[InputUltraRight] == -1)
+
 		{
+
 			t = 0;
+
 			r = 0;
+
 			l = 0;
+
 			//			motor[backLeft] = 63;
+
 		}
+
 		else if (SensorValue[InputUltraLeft] < 20)
+
 		{
+
 			t = 40;
+
 			r = 0;
+
 			l = 1;
+
 			//			motor[backLeft] = 63 + 20;
+
 		}
+
 		else if(SensorValue[InputUltraLeft] > 20)
+
 		{
+
 			t = 40;
+
 			r = 1;
+
 			l = 0;
+
 			//			motor[backLeft] = 50;
+
 		}
+
 		wait1Msec (15);
+
+
 
 	}
 
+
+
 }
 
+
+
 /*---------------------------------------------------------------------------*/
+
 /*                                                                           */
+
 /*        Description: Competition template for VEX EDR                      */
+
 /*                                                                           */
+
 /*---------------------------------------------------------------------------*/
+
+
 
 // This code is for the VEX cortex platform
+
 #pragma platform(VEX2)
 
+
+
 // Select Download method as "competition"
+
 #pragma competitionControl(Competition)
 
+
+
 //Main competition background code...do not modify!
+
 #include "Vex_Competition_Includes.c"
 
+
+
 /*---------------------------------------------------------------------------*/
+
 /*                          Pre-Autonomous Functions                         */
+
 /*                                                                           */
+
 /*  You may want to perform some actions before the competition starts.      */
+
 /*  Do them in the following function.  You must return from this function   */
+
 /*  or the autonomous and usercontrol tasks will not be started.  This       */
+
 /*  function is only called once after the cortex has been powered on and    */
+
 /*  not every time that the robot is disabled.                               */
+
 /*---------------------------------------------------------------------------*/
+
+
 
 void pre_auton()
+
 {
+
 	// Set bStopTasksBetweenModes to false if you want to keep user created tasks
+
 	// running between Autonomous and Driver controlled modes. You will need to
+
 	// manage all user created tasks if set to false.
+
 	bStopTasksBetweenModes = true;
 
+
+
 	// Set bDisplayCompetitionStatusOnLcd to false if you don't want the LCD
+
 	// used by the competition include file, for example, you might want
+
 	// to display your team name on the LCD in this function.
+
 	// bDisplayCompetitionStatusOnLcd = false;
 
+
+
 	// All activities that occur before the competition starts
+
 	// Example: clearing encoders, setting servo positions, ...
+
 }
 
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*                              Autonomous Task                              */
-/*                                                                           */
-/*  This task is used to control your robot during the autonomous phase of   */
-/*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
+
+
 /*---------------------------------------------------------------------------*/
 
+/*                                                                           */
+
+/*                              Autonomous Task                              */
+
+/*                                                                           */
+
+/*  This task is used to control your robot during the autonomous phase of   */
+
+/*  a VEX Competition.                                                       */
+
+/*                                                                           */
+
+/*  You must modify the code to add your own robot specific commands here.   */
+
+/*---------------------------------------------------------------------------*/
+
+
+
 task autonomous()
+
 {
+
+
 
 	//short backLeftAdjust;
 
 
+
+
+
 	startTask (startUltra);
 
+	//go to mobile goal
+
 	while (p < 50)
+
 	{
+
 		motor[backLeft] = 63 + t*r;
+
 		motor [backRight] = 63 + t*l;
+
 		motor [frontLeft] = 63 + t*r;
+
 		motor [frontRight] = 63 + t*l;
+
 		wait1Msec(15);
+
 		p++;
+
 	}
+
+	//pick up mobile goal
 
 	stopTask(startUltra);
 
+
+
 	motor [mobileLift] = 127;
+
 	wait1Msec(2000);
+
 	motor [mobileLift] = 0;
+
 	wait1Msec(100);
 
-	motor [mobileLift] = -127;
-	wait1Msec(2000);
-	motor [mobileLift] = 0;
-	wait1Msec(1000);
+
+	/*motor[backLeft] = -63;
+
+	motor [backRight] = -63;
+
+	motor [frontLeft] = -63;
+
+	motor [frontRight] = -63;
+
+	wait1Msec(500);
 
 	motor[backLeft] = 63;
+
 	motor [backRight] = 63;
+
 	motor [frontLeft] = 63;
+
 	motor [frontRight] = 63;
-	wait1Msec(1000);
+
+	wait1Msec(350);
+
+
+/*
 	motor[backLeft] = 0;
+
 	motor [backRight] = 0;
+
 	motor [frontLeft] = 0;
+
 	motor [frontRight] = 0;
+*/
+
+	motor [mobileLift] = -127;
+
+	wait1Msec(2000);
+
+	motor [mobileLift] = 0;
+
+	motor[backLeft] = 0;
+
+	motor [backRight] = 0;
+
+	motor [frontLeft] = 0;
+
+	motor [frontRight] = 0;
+
 	wait1Msec(500);
+
+
 
 	motor[backLeft] = -63;
-	motor [backRight] = 63;
+
+	motor [backRight] = -63;
+
 	motor [frontLeft] = -63;
-	motor [frontRight] = 63;
-	wait1Msec(300);
+
+	motor [frontRight] = -63;
+
+	wait1Msec(3000);
+
 	motor[backLeft] = 0;
+
 	motor [backRight] = 0;
+
 	motor [frontLeft] = 0;
+
 	motor [frontRight] = 0;
 
-	startTask (startUltraRev);
+	wait1Msec(500);
+
+
+
+	motor[backLeft] = -63;
+
+	motor [backRight] = 63;
+
+	motor [frontLeft] = -63;
+
+	motor [frontRight] = 63;
+
+	wait1Msec(2000);
+
+	motor[backLeft] = 0;
+
+	motor [backRight] = 0;
+
+	motor [frontLeft] = 0;
+
+	motor [frontRight] = 0;
+
+	wait1Msec(200);
+
+
+	/*	startTask (startUltraRev);
+
+
 
 	while (p < 50)
+
 	{
-		motor[backLeft] = 63 + t*l;
-		motor [backRight] = 63 + t*r;
-		motor [frontLeft] = 63 + t*l;
-		motor [frontRight] = 63 + t*r;
-		wait1Msec(15);
-		p++;
+
+	motor[backLeft] = 63 + t*l;
+
+	motor [backRight] = 63 + t*r;
+
+	motor [frontLeft] = 63 + t*l;
+
+	motor [frontRight] = 63 + t*r;
+
+	wait1Msec(15);
+
+	p++;
+
 	}
+	*/
+
 
 	motor [mobileLift] = 127;
+
 	wait1Msec(2000);
+
 	motor [mobileLift] = 0;
+
 	wait1Msec(500);
 
-	motor [mobileLift] = -127;
-	wait1Msec(500);
-	motor [mobileLift] = 0;
-	wait1Msec(500);
 
 	motor[backLeft] = 63;
+
 	motor [backRight] = 63;
+
 	motor [frontLeft] = 63;
+
 	motor [frontRight] = 63;
-	wait1Msec(500);
-	motor[backLeft] = 0;
-	motor [backRight] = 0;
-	motor [frontLeft] = 0;
-	motor [frontRight] = 0;
+
 	wait1Msec(500);
 
-	stopTask (startUltraRev);
+
+	motor[backLeft] = -63;
+
+	motor [backRight] = -63;
+
+	motor [frontLeft] = -63;
+
+	motor [frontRight] = -63;
+
+	wait1Msec(500);
+
+	motor[backLeft] = 0;
+
+	motor [backRight] = 0;
+
+	motor [frontLeft] = 0;
+
+	motor [frontRight] = 0;
+
+	wait1Msec(500);
+
+
+	motor [mobileLift] = -127;
+
+	wait1Msec(500);
+
+	motor [mobileLift] = 0;
+
+
+
+//	stopTask (startUltraRev);
+
+
+
 
 
 	/*motor[mobileLift] = 127;
+
 	wait1Msec(1000);
 
+
+
 	motor [frontLeft] = 127;
+
 	motor [frontRight] = 127;
+
 	motor [backLeft] = 127;
+
 	motor [backRight] = 127;
+
 	wait1Msec(500);
+
+
 
 	motor[mobileLift] = -127;
+
 	wait1Msec(1000);
 
+
+
 	motor [frontLeft] = 127;
+
 	motor [frontRight] = 127;
+
 	motor [backLeft] = 127;
+
 	motor [backRight] = 127;
+
 	wait1Msec(500);
+
+
 
 	startTask (startUltra);
 
+
+
 	motor [mobileLift] = 127;
+
 	wait1Msec(500);
+
 	motor [mobileLift] = -127;
+
 	wait1Msec(500);
+
+
+
+
+
+
+
 
 
 
@@ -276,259 +584,523 @@ task autonomous()
 
 	/*wait1Msec(2000);
 
+
+
 	resetMotorEncoder(backLeft);
+
 	resetMotorEncoder(frontLeft);
+
 	resetMotorEncoder(backRight);
+
 	resetMotorEncoder(frontRight);
+
 	wait1Msec(2000);
+
+
 
 	motor [backLeft] = 550;
+
 	wait1Msec(2000);
+
+
 
 	if(getMotorEncoder(backLeft) > 500 &&	(getMotorEncoder(backLeft) < 7000))
+
 	{
+
 	motor[backLeft] = 63;
+
 	motor[frontLeft] = 63;
+
 	motor[backRight] = 63;
+
 	motor[frontRight] = 63;
+
 	wait1Msec(2000);
+
 	}
+
 	if (SensorValue[InputUltra] < 12)
+
 	{
+
 	backLeftAdjust = 50;
+
 	}
+
 	else
+
 	{
+
 	backLeftAdjust = 0;
+
 	}
+
 	if(getMotorEncoder(backLeft) > 7000)
+
 	{
+
 	motor[backLeft] = 0 + backLeftAdjust;
+
 	motor[frontLeft] = 0 + backLeftAdjust;
+
 	motor[backRight] = 0 + backLeftAdjust;
+
 	motor[frontRight] = 0 + backLeftAdjust;
+
 	wait1Msec(2000);
+
 	}*/
 
+
+
 	//this is just a reference point for the rest of the program
+
 }
 
+
+
 /*---------------------------------------------------------------------------*/
+
 /*                                                                           */
+
 /*                              User Control Task                            */
+
 /*                                                                           */
+
 /*  This task is used to control your robot during the user control phase of */
+
 /*  a VEX Competition.                                                       */
+
 /*                                                                           */
+
 /*  You must modify the code to add your own robot specific commands here.   */
+
 /*---------------------------------------------------------------------------*/
+
+
 
 task usercontrol()
+
 {
+
 	bLCDBacklight = true;                                    // Turn on LCD Backlight
-	string mainBattery;//, backupBattery;
+
+	string mainBattery;
+	string backupBattery;
+
 
 	while (true)
+
 	{
+
 		/*if(vexRT[Ch1]>5)
+
 		{
+
 		motor[backLeft] = 127;
+
 		motor[frontLeft] = 127;
+
 		motor[backRight] = -127;
+
 		motor[frontRight] = -127;
+
 		}*/
+
+
+
 
 
 		if (vexRT[Ch2]>10)
+
 		{
+
 			motor[backRight] = 127;
+
 			motor[frontRight] = 127;
+
 		}
+
+
 
 		else if (vexRT[Ch2]<-10)
+
 		{
+
 			motor[backRight] = -127;
+
 			motor[frontRight] = -127;
-		}
-		else
-		{
-			motor[backRight] = 0;
-			motor[frontRight] = 0;
-		}
-		/*if(vexRT[Ch4]>5)
-		{
-		motor[backRight] = 127;
-		motor[frontRight] = 127;
-		motor[backLeft] = -127;
-		motor[frontLeft] = -127;
-		}*/
-		if (vexRT[Ch3]>10)
-		{
-			motor [backLeft] = 127;
-			motor [frontLeft] = 127;
+
 		}
 
-		else if (vexRT[Ch3]<-10)
-		{
-			motor[backLeft] = -127;
-			motor[frontLeft] = -127;
-		}
 		else
+
 		{
-			motor[backLeft] = 0;
-			motor[frontLeft] = 0;
+
+			motor[backRight] = 0;
+
+			motor[frontRight] = 0;
+
 		}
+
+		/*if(vexRT[Ch4]>5)
+
+		{
+
+		motor[backRight] = 127;
+
+		motor[frontRight] = 127;
+
+		motor[backLeft] = -127;
+
+		motor[frontLeft] = -127;
+
+		}*/
+
+		if (vexRT[Ch3]>10)
+
+		{
+
+			motor [backLeft] = 127;
+
+			motor [frontLeft] = 127;
+
+		}
+
+
+
+		else if (vexRT[Ch3]<-10)
+
+		{
+
+			motor[backLeft] = -127;
+
+			motor[frontLeft] = -127;
+
+		}
+
+		else
+
+		{
+
+			motor[backLeft] = 0;
+
+			motor[frontLeft] = 0;
+
+		}
+
 		//this code control moving fwd and bkwd
 
 
+
+
+
 		/*if(vexRT[Ch4]>5)
+
 		{
+
 		motor[backRight] = -127;
+
 		motor[frontRight] = 127;
+
 		}
+
 		else if (vexRT[Ch4]<-5)
+
 		{
+
 		motor [backRight] = 127;
+
 		motor [frontRight] = -127;
+
 		}
+
 		/*
+
 		/*if (vexRT[Ch1]>5)
+
 		{
+
 		motor [backLeft] = 127;
+
 		motor [frontLeft] = -127;
+
 		}
+
 		else if (vexRT[Ch1]<-5)
+
 		{
+
 		motor [backLeft] = -127;
+
 		motor [frontLeft] = 127;
+
 		}*/
+
 		//this code controls strafing right and left
 
+
+
 		if (vexRT[Btn5DXmtr2] == 1)
+
 		{
+
 			motor [frontLeft] = 0;
+
 			motor [frontRight] = 0;
+
 			motor [backLeft] = 0;
+
 			motor [backRight] = 0;
+
 			motor [arms] = 0;
+
 			motor [claw] = 0;
+
 			motor [armss] = 0;
+
 			motor [stacker] =0;
+
 			motor [mobileLift]=0;
 
+
+
 		}
+
 		if (vexRT[Btn5D] == 1)
+
 		{
+
 			motor [frontLeft] = 0;
+
 			motor [frontRight] = 0;
+
 			motor [backLeft] = 0;
+
 			motor [backRight] = 0;
+
 			motor [arms] = 0;
+
 			motor [claw] = 0;
+
 			motor [armss] = 0;
+
 			motor [stacker] =0;
+
 			motor [mobileLift]=0;
 
+
+
 		}
+
 		//this was programmed by Vaishnavi
+
 		//so that each channel can do many things
+
 		//thanks!
 
+
+
 		/*if (vexRT[Btn7U] == 1)
+
 		{
+
 		motor [frontLeft] = 127;
+
 		motor [backLeft] = 127;
+
 		motor [frontRight] = 127;
+
 		motor [backRight] = 127;
+
 		}
+
 		else if (vexRT[Btn7D] == 1)
+
 		{
+
 		motor [frontLeft] = -127;
+
 		motor [backLeft] = -127;
+
 		motor [frontRight] = -127;
+
 		motor [backRight] = -127;
+
 		}
+
 		else
+
 		{
+
 		motor [frontLeft] = 0;
+
 		motor [backLeft] = 0;
+
 		motor [frontRight] = 0;
+
 		motor [backRight] = 0;
+
 		}*/
+
+
+
 
 
 		if (vexRT[Btn8U] == 1)
+
 		{
+
 			motor [claw] = 127;
+
 		}
+
 		else if (vexRT [Btn8D] == 1)
+
 		{
+
 			motor [claw] = -127;
+
 		}
+
 		else
+
 		{ //Hi Vaibhavi, try setting this number to different values. This will be your default value when you are not pressing any buttons.
+
 			motor [claw] = -20;
+
 		}
+
+
+
 
 
 		if (vexRT[Btn6DXmtr2] == 1)
+
 		{
-			motor [arms] = 127;
-			motor [armss] = 127;
+
+			motor [arms] = 40;
+
+			motor [armss] = 40;
+
 		}
+
 		else if (vexRT [Btn6UXmtr2] == 1)
+
 		{
+
 			motor [arms] = -127;
-			motor [armss] =-127;
+
+			motor [armss] = -127;
+
 		}
-		else
+
+		else if (vexRT [Btn5UXmtr2] == 1)
+
 		{
 			motor [arms] = -30;
 			motor [armss] = -30;
 		}
 
+		else
+
+		{
+
+			motor [arms] = 0;
+
+			motor [armss] = 0;
+
+		}
+
+
+
+
 
 		if (vexRT[Btn7RXmtr2] == 1)
+
 		{
+
 			motor [mobileLift] = 127;
-		}
-		else if (vexRT[Btn7LXmtr2] == 1)
-		{
-			motor [mobileLift] = -127;
-		}
-		else
-		{
-			motor [mobileLift] = 0;
+
 		}
 
-		if (vexRT[Btn8RXmtr2] == 1)
+		else if (vexRT[Btn7LXmtr2] == 1)
+
 		{
-			motor [stacker] = 127;
+
+			motor [mobileLift] = -127;
+
 		}
-		else if (vexRT[Btn8LXmtr2] == 1)
-		{
-			motor [stacker] = -127;
-		}
+
 		else
-		{ //Hi Vaibhavi, try setting this number to different values. This will be your default value when you are not pressing any buttons.
-			motor [stacker] = 20;
+
+		{
+
+			motor [mobileLift] = 0;
+
 		}
+
+
+
+		if (vexRT[Btn8RXmtr2] == 1)
+
+		{
+
+			motor [stacker] = 127;
+
+		}
+
+		else if (vexRT[Btn8LXmtr2] == 1)
+
+		{
+
+			motor [stacker] = -127;
+
+		}
+
+		else
+
+		{ //Hi Vaibhavi, try setting this number to different values. This will be your default value when you are not pressing any buttons.
+
+			motor [stacker] = 20;
+
+		}
+
+
+
 
 
 		clearLCDLine(0);                                            // Clear line 1 (0) of the LCD
+
 		//clearLCDLine(1);                                            // Clear line 2 (1) of the LCD
 
+
+
 		//Display the Primary Robot battery voltage
+
 		displayLCDString(0, 0, "Primary: ");
+
 		sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the value to be displayed
+
 		displayNextLCDString(mainBattery);
 
+
+
 		//Display the Backup battery voltage
-		//displayLCDString(1, 0, "Backup: ");
-		//sprintf(backupBattery, "%1.2f%c", BackupBatteryLevel/1000.0, 'V');    //Build the value to be displayed
-		//displayNextLCDString(backupBattery);
+
+		displayLCDString(1, 0, "Backup: ");
+
+		sprintf(backupBattery, "%1.2f%c", BackupBatteryLevel/1000.0, 'V');    //Build the value to be displayed
+
+		displayNextLCDString(backupBattery);
+
+
 
 		//Short delay for the LCD refresh rate
+
 		wait1Msec(10);
+
 	}
+
 }
